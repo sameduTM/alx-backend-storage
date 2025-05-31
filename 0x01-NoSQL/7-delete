@@ -1,0 +1,2 @@
+// script that deletes all documents with name="ALX School" in collection school
+db.school.delete({'name': 'ALX School'}, { multi: true })
