@@ -8,9 +8,10 @@ from pymongo import MongoClient
 if __name__ == "__main__":
     client = MongoClient()
     db = client.logs
-    print(f"{db.nginx.count_documents({})} logs")
+    collection = db.nginx
+    print(f"{collection.count_documents({})} logs")
     print("Methods:")
     methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     for method in methods:
-        print(f"    method {method}: {db.nginx.count_documents({'method': method})}")
-    print(f"{db.nginx.count_documents({'path': '/status'})} status check")
+        print(f"\tmethod {method}: {collection.count_documents({'method': method})}")
+    print(f"{collection.count_documents({'path': '/status'})} status check")
