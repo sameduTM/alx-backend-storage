@@ -16,7 +16,13 @@ if __name__ == "__main__":
         print(
             f"\tmethod {method}: {collection.count_documents({'method': method})}")
     print(f"{collection.count_documents({'method': 'GET', 'path': '/status'})} status check")
+    # top 10 IPs
     print("IPs:")
-    filt_objs = collection.find().skip(collection.count_documents({}) - 10)
-    for obj in filt_objs:
-        print(f"\t{obj['ip']}")
+    pipeline = [
+        {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 10}
+    ]
+    top_ips = collection.aggregate(pipeline)
+    for ip in top_ips:
+        print(f"\t{ip['_id']}: {ip['count']}")
